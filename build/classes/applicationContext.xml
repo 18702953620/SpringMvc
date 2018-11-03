@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans.xsd 
+                        http://www.springframework.org/schema/context 
+                        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--1 引入属性文件，在配置中占位使用 -->
+	<context:property-placeholder
+		location="classpath*:db.properties" />
+	<!-- 2 配置数据源 -->
+	<bean id="datasource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<!-- 数据库驱动 -->
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver" />
+		<!-- 连接数据库的URL 数据库名为已经创建好的User -->
+		<property name="url" value="${jdbc.url}" />
+		<!-- 连接数据库的用户名 -->
+		<property name="username" value="${jdbc.uid}" />
+		<!-- 连接数据的密码 -->
+		<property name="password" value="${jdbc.pwd}" />
+	</bean>
+
+
+	<!--3 会话工厂bean sqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 数据源 -->
+		<property name="dataSource" ref="datasource"></property>
+		<!-- 别名 -->
+		<property name="typeAliasesPackage" value="com.test.model"></property>
+		<!-- sql映射文件路径 -->
+		<property name="mapperLocations"
+			value="classpath*:com/test/mapper/*Mapper.xml"></property>
+	</bean>
+
+	<!-- 方法三：mapper批量扫描 从mapper包中扫描出mapper接口，自动创建代理对象并且在spring容器中注册 遵循规范：将mapper.java和mapper.xml映射文件名称保持一致，且在一个目录中。 
+		自动扫描出来的mapper的bean的id为mapper类名（首字母小写） -->
+
+
+
+	<!--4 自动扫描对象关系映射 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!--指定会话工厂，如果当前上下文中只定义了一个则该属性可省去 -->
+		<property name="sqlSessionFactoryBeanName"
+			value="sqlSessionFactory"></property>
+		<!-- 指定要自动扫描接口的基础包，实现接口 -->
+		<property name="basePackage" value="com.test.mapper"></property>
+	</bean>
+
+	<!--6 容器自动扫描IOC组件 -->
+	<context:component-scan base-package="com.test"></context:component-scan>
+
+	<!--5 声明式事务管理 -->
+	<!--定义事物管理器，由spring管理事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="datasource"></property>
+	</bean>
+
+
+
+
+
+</beans>

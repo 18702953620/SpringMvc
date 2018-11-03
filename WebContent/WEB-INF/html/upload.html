@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+
+		<h1>采用multipart提供的file.transfer方法上传文件2</h1>
+		<form name="form2" action="/SpringMvc/file/upload" method="post" enctype="multipart/form-data">
+			<input type="file" name="file_03" /> <input type="submit" value="fileupload" />
+		</form>
+
+		<h1>使用spring MVC提供的方法上传文件</h1>
+		<form name="form2" action="/SpringMvc/file/uploadspring" method="post" enctype="multipart/form-data">
+			<input type="file" name="file_04" />
+			<input type="submit" value="fileupload" />
+		</form>
+
+	</body>
+
+</html>
