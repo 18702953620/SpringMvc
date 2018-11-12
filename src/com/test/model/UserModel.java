@@ -1,21 +1,12 @@
 package com.test.model;
 
 public class UserModel {
-	private String id;
+	private String userId;
 	private String username;
 	private String password;
 	private String phone;
 	private String email;
-	private String createTime;
 	private String editTime;
-
-	public String getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
 
 	public String getEditTime() {
 		return editTime;
@@ -49,12 +40,12 @@ public class UserModel {
 		this.email = email;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getUsername() {

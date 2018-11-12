@@ -1,278 +1,217 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<title>主页</title>
-		<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="js/template-web.js"></script>
-		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<head>
+<meta charset="utf-8" />
+<title>主页</title>
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/template-web.js"></script>
+<script type="text/javascript" src="js/user.js"></script>
+<script type="text/javascript" src="js/article.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-		<style>
-			.form-control {
-				margin: 15px;
-			}
-			
-			.input-group {
-				width: 50%;
-				margin-top: 15px;
-			}
-			
-			.nav-pills {
-				width: 15%;
-				text-align: center;
-				margin-top: 50px;
-			}
-			
-			.tab-content {
-				margin-left: 20px;
-				margin-top: 35px;
-				width: 80%;
-			}
-			
-			.navbar {
-				width: 80%;
-				margin: auto;
-			}
-			
-		</style>
-	</head>
+<style>
+.form-control {
+	margin: 15px;
+}
 
-	<body>
+.input-group {
+	width: 50%;
+	margin-top: 15px;
+}
 
-		<nav class="navbar navbar-default " role="navigation">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#">SpringMvc</a>
-				</div>
-				<div>
-					<ul class="nav navbar-nav">
-						<li>
-							<a href="#">iOS</a>
-						</li>
-						<li>
-							<a href="#">SVN</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
+.nav-pills {
+	width: 150px;
+	text-align: center;
+	margin-left: 15px;
+	margin-top: 50px;
+}
 
-		<ul id="myTab" class="nav nav-pills nav-stacked pull-left">
-			<li class="active">
-				<a href="#home" data-toggle="tab">用户</a>
-			</li>
-			<li>
-				<a href="#ios" data-toggle="tab">设置</a>
-			</li>
-		</ul>
+.tab-content {
+	margin-left: 20px;
+	margin-top: 35px;
+	width: 80%;
+}
 
-		<div id="myTabContent" class="tab-content pull-right pull-left">
-			<div class="tab-pane fade in active" id="home">
-				<div id="content"></div>
-			</div>
-			<div class="tab-pane fade" id="ios">
-				<p>iOS 是一个由苹果公司开发和发布的手机操作系统</p>
-			</div>
+.navbar {
+	width: 80%;
+	margin: auto;
+}
+</style>
+</head>
+
+<body>
+
+	<ul id="myTab" class="nav nav-pills nav-stacked pull-left">
+		<li class="active"><a href="#home" data-toggle="tab">用户</a></li>
+		<li onclick="showArticle()"><a href="#article" data-toggle="tab">文章</a>
+		</li>
+	</ul>
+
+	<div id="myTabContent" class="tab-content pull-right pull-left">
+		<div class="tab-pane fade in active" id="home">
+			<div id="user_content"></div>
 		</div>
+		<div class="tab-pane fade" id="article">
+			<div id="article_content"></div>
+		</div>
+	</div>
 
-		<!-- 模态框（Modal） -->
-		<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
-				</button>
-						<h4 class="modal-title" id="myUser">
-					添加用户
-				</h4>
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="addUser" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h4 class="modal-title" id="myUser">添加用户</h4>
+				</div>
+				<div class="modal-body">
+					<div class="input-group" style="display: none;">
+						<span class="input_tip">*id</span> <input id="id"
+							class="form-control" placeholder="请输入用户名" />
 					</div>
-					<div class="modal-body">
-						<div class="input-group" style="display: none;">
-							<span class="input_tip">*id</span>
-							<input id="id" class="form-control" placeholder="请输入用户名" />
-						</div>
-						<div class="input-group">
-							<span class="input_tip">*用户名</span>
-							<input id="username" class="form-control" placeholder="请输入用户名" />
-						</div>
-						<div class="input-group">
-							<span class="input_tip">*密码</span>
-							<input id="password" class="form-control" style="-webkit-text-security:disc" placeholder="请输入密码" />
-						</div>
-						<div class="input-group">
-							<span class="input_tip" style="margin-top: 20px;">*手机号</span>
-							<input id="phone" type="tel" class="form-control" placeholder="请输入手机号" />
-						</div>
-						<div class="input-group">
-							<span class="input_tip">邮箱</span>
-							<input id="email" type="email" class="form-control" placeholder="请输入邮箱" />
-						</div>
+					<div class="input-group">
+						<span class="input_tip">*用户名</span> <input id="username"
+							class="form-control" placeholder="请输入用户名" />
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" onclick="addorEditUser()">
-					提交
-				</button>
+					<div class="input-group">
+						<span class="input_tip">*密码</span> <input id="password"
+							class="form-control" style="-webkit-text-security: disc"
+							placeholder="请输入密码" />
+					</div>
+					<div class="input-group">
+						<span class="input_tip" style="margin-top: 20px;">*手机号</span> <input
+							id="phone" type="tel" class="form-control" placeholder="请输入手机号" />
+					</div>
+					<div class="input-group">
+						<span class="input_tip">邮箱</span> <input id="email" type="email"
+							class="form-control" placeholder="请输入邮箱" />
 					</div>
 				</div>
-				<!-- /.modal-content -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						onclick="addorEditUser()">提交</button>
+				</div>
 			</div>
-			<!-- /.modal-dialog -->
+			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal -->
-		<!-- 模态框（Modal） -->
-		<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
-				</button>
-						<h4 class="modal-title">
-					提示
-				</h4>
+		<!-- /.modal-dialog -->
+	</div>
+
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="addArticle" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h4 class="modal-title" id="articleTitle">添加文章</h4>
+				</div>
+				<div class="modal-body">
+					<div class="input-group" style="display: none;">
+						<span class="input_tip">*id</span> <input id="id"
+							class="form-control" placeholder="请输入用户名" />
 					</div>
-					<div class="modal-body">
-						<h4 class="modal-title">
-					要删除这个用户？
-				</h4>
+					<div class="input-group">
+						<span class="input_tip">*标题</span> <input id="article_title"
+							class="form-control" placeholder="请输入标题" />
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" onclick="deleteUser()">
-					提交
-				</button>
+					<div class="input-group">
+						<span class="input_tip">*链接</span> <input id="article_link"
+							class="form-control" placeholder="请输入链接" />
 					</div>
 				</div>
-				<!-- /.modal-content -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						onclick="addorEditArticle()">提交</button>
+				</div>
 			</div>
-			<!-- /.modal-dialog -->
+			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal -->
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h4 class="modal-title">提示</h4>
+				</div>
+				<div class="modal-body">
+					<h4 class="modal-title">要删除这个用户？</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						onclick="deleteUser()">提交</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 
-		<script>
-			var userId;
-			$(function() {
-				$('#myTab li:eq(0) a').tab('show');
-			});
+	<div class="modal fade" id="deleteArticle" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h4 class="modal-title">提示</h4>
+				</div>
+				<div class="modal-body">
+					<h4 class="modal-title">要删除这个文章？</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						onclick="deleteArticle()">提交</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
 
-			var url = "http://localhost:8080/SpringMvc/user/getUser";
-			$.get(url, function(data) {
-				if(data.code == 1) {
-					var html = template('list', data.data);
-					document.getElementById('content').innerHTML = html;
-				} else {
-					alert(data.msg)
-				}
-			});
+	<div class="modal fade" id="toLogin" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">×</button>
+					<h4 class="modal-title">提示</h4>
+				</div>
+				<div class="modal-body">
+					<h4 class="modal-title">用户登录已失效，请重新登录</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="toLogin()">去登录</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
 
-			//添加用户
-			function addorEditUser() {
+	<script>
+		$(function() {
+			$('#myTab li:eq(0) a').tab('show');
+		});
 
-				var username = $('#username').val();
-				var password = $('#password').val();
-				var phone = $('#phone').val();
-				var email = $('#email').val();
-				if(username.length <= 0) {
-					alert("用户名不能为空")
-					return;
-				}
-				if(password.length <= 0) {
-					alert("密码不能为空")
-					return;
-				}
-				if(phone.length <= 0) {
-					alert("手机号不能为空")
-					return;
-				}
-				var title = $('#myUser').html();
-				if(title.indexOf("修改") != -1) {
-					var id = $('#id').val();
-					var url = "http://localhost:8080/SpringMvc/user/updateUser?username=" +
-						username + "&password=" + password + "&phone=" + phone + "&email=" + email + "&id=" + id;
-					$.get(url, function(data) {
-						if(data.code == 1) {
-							$('#addUser').modal('hide');
-							//刷新界面
-							window.location.reload();
-						} else {
-							alert(data.msg);
-						}
-					});
-
-				} else {
-					var url = "http://localhost:8080/SpringMvc/user/addUser?username=" +
-						username + "&password=" + password + "&phone=" + phone + "&email=" + email;
-					$.get(url, function(data) {
-						if(data.code == 1) {
-							$('#addUser').modal('hide');
-							//刷新界面
-							window.location.reload();
-						} else {
-							alert(data.msg);
-						}
-					});
-				}
-
-			}
-
-			//删除用户
-			function deleteUser() {
-
-				if(userId.length <= 0) {
-					alert("id不能为空")
-					return;
-				}
-				var url = "http://localhost:8080/SpringMvc/user/deleteUser?id=" + userId;
-				$.get(url, function(data) {
-					if(data.code == 1) {
-						//刷新界面
-						window.location.reload();
-					} else {
-						alert(data.msg);
-					}
-				});
-
-			}
-			//编辑弹窗
-			function showEditDialog(id) {
-				var url = "http://localhost:8080/SpringMvc/user/getUser?id=" + id;
-				$.get(url, function(data) {
-					if(data.code == 1) {
-						$('#id').val(data.data.id);
-						$('#username').val(data.data.username);
-						$('#password').val(data.data.password);
-						$('#phone').val(data.data.phone);
-						$('#email').val(data.data.email);
-
-						$('#myUser').html("修改用户");
-
-						$('#addUser').modal('show');
-					} else {
-						alert(data.msg)
-					}
-				});
-
-			}
-			//添加弹窗
-			function showAddDialog() {
-				$('#id').val('');
-				$('#username').val('');
-				$('#password').val('');
-				$('#phone').val('');
-				$('#email').val('');
-
-				$('#myUser').html("添加用户");
-
-				$('#addUser').modal('show');
-
-			}
-
-			function showDeleteDialog(id) {
-				userId = id;
-				$('#deleteUser').modal('show');
-			}
-		</script>
-		<script id="list" type="text/html">
+		getUser();
+	</script>
+	<script id="user_list" type="text/html">
 
 			<table class="table table-bordered">
 				<caption>
@@ -284,7 +223,6 @@
 						<th>用户名</th>
 						<th>手机号</th>
 						<th>邮箱</th>
-						<th>创建时间</th>
 						<th>修改时间</th>
 						<th><button class="btn btn-primary pull-right" data-toggle="modal" onclick="showAddDialog()">添加用户</button></th>
 					</tr>
@@ -297,11 +235,10 @@
 						<td>{{$value.username}}</td>
 						<td>{{$value.phone}}</td>
 						<td>{{$value.email}}</td>
-						<td>{{$value.createTime}}</td>
 						<td>{{$value.editTime}}</td>
 						<td>
-							<button type="button" class="btn btn-default" onclick="showEditDialog({{$value.id}})">编辑</button>
-							<button type="button" class="btn btn-default" onclick="showDeleteDialog({{$value.id}})">删除</button>
+							<button type="button" class="btn btn-default" onclick="showEditDialog({{$value.userId}})">编辑</button>
+							<button type="button" class="btn btn-default" onclick="showDeleteDialog({{$value.userId}})">删除</button>
 
 						</td>
 					</tr>
@@ -312,6 +249,50 @@
 
 		</script>
 
-	</body>
+	<script id="article_list" type="text/html">
+
+			<table class="table table-bordered">
+				<caption>
+
+				</caption>
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>标题</th>
+						<th>链接</th>
+						<th>阅读数</th>
+						<th>评论数</th>
+						<th>收藏数</th>
+						<th>创建时间</th>
+						<th>创建者</th>
+						<th><button class="btn btn-primary pull-right" data-toggle="modal" onclick="showAddArticleDialog()">添加</button></th>
+					</tr>
+				</thead>
+				<tbody>
+
+					{{each $data}}
+					<tr>
+						<td>{{$index}}</td>
+						<td>{{$value.title}}</td>
+						<td>{{$value.link}}</td>
+						<td>{{$value.readCount}}</td>
+						<td>{{$value.commitCount}}</td>
+						<td>{{$value.favoriteCount}}</td>
+						<td>{{$value.createTime}}</td>
+						<td>{{$value.username}}</td>
+						<td>
+							<button type="button" class="btn btn-default" onclick="showEditArticleDialog({{$value.articleId}})">编辑</button>
+							<button type="button" class="btn btn-default" onclick="showDeleteArttcleDialog({{$value.articleId}})">删除</button>
+
+						</td>
+					</tr>
+					{{/each}}
+
+				</tbody>
+			</table>
+
+		</script>
+
+</body>
 
 </html>

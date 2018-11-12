@@ -11,13 +11,11 @@ public class IndexInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		// 请求后，返回数据之前
 	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		// 请求之前调用
 //		if (request.getRequestURI().contains("getUser")) {
 //			response.sendRedirect("addUser");
 //			return false;
@@ -30,7 +28,6 @@ public class IndexInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		// 返回数据之后
 	}
 
 }

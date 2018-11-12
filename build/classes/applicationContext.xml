@@ -24,7 +24,8 @@
 		<property name="password" value="${jdbc.pwd}" />
 	</bean>
 
-
+	<!-- 方法三：mapper批量扫描 从mapper包中扫描出mapper接口，自动创建代理对象并且在spring容器中注册 遵循规范：将mapper.java和mapper.xml映射文件名称保持一致，且在一个目录中。 
+		自动扫描出来的mapper的bean的id为mapper类名（首字母小写） -->
 	<!--3 会话工厂bean sqlSessionFactoryBean -->
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -37,8 +38,7 @@
 			value="classpath*:com/test/mapper/*Mapper.xml"></property>
 	</bean>
 
-	<!-- 方法三：mapper批量扫描 从mapper包中扫描出mapper接口，自动创建代理对象并且在spring容器中注册 遵循规范：将mapper.java和mapper.xml映射文件名称保持一致，且在一个目录中。 
-		自动扫描出来的mapper的bean的id为mapper类名（首字母小写） -->
+
 
 
 

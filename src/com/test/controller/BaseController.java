@@ -7,19 +7,24 @@ import com.test.utils.Global;
 
 public class BaseController {
 
-	public static final String SUCC_MSG = "����ɹ�";
-	public static final String ERROR_MSG = "����ʧ��";
-	/**
-	 * �ɹ�
-	 */
+	public static final String MSG_SUCC = "请求成功";
+	public static final String MSG_ERROR = "请求失败";
+
+	public static final String MSG_ADD_ERROR = "添加失败";
+	public static final String MSG_ADD_SUCC = "添加成功";
+
+	public static final String MSG_UPDATE_ERROR = "更新失败";
+	public static final String MSG_UPDATE_SUCC = "更新成功";
+
+	public static final String MSG_DELETE_ERROR = "删除失败";
+	public static final String MSG_DELETE_SUCC = "删除成功";
+
+	public static final String MSG_NO_LOGIN = "用户未登录，请先登录";
+
 	public static final int SUCC_CODE = 1;
-	/**
-	 * ʧ��
-	 */
+
 	public static final int ERROR_CODE = 0;
-	/**
-	 * ��¼ʧЧ
-	 */
+
 	public static final int NO_LOGIN = 101;
 
 	/**
@@ -30,9 +35,9 @@ public class BaseController {
 	public BaseModel makeModel(int code) {
 		BaseModel model = new BaseModel();
 		if (code == SUCC_CODE) {
-			model.setMsg(SUCC_MSG);
+			model.setMsg(MSG_SUCC);
 		} else if (code == ERROR_CODE) {
-			model.setMsg(ERROR_MSG);
+			model.setMsg(MSG_ERROR);
 		}
 		model.setCode(code);
 		return model;
@@ -67,7 +72,7 @@ public class BaseController {
 	}
 
 	/**
-	 * �Ƿ��¼
+	 * 是否登录
 	 * 
 	 * @param session
 	 * @return

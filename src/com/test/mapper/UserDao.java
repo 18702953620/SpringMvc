@@ -2,19 +2,15 @@ package com.test.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.test.model.UserModel;
 
+@Mapper
 public interface UserDao {
-	/**
-	 * 获取所有用户
-	 * 
-	 * @return
-	 */
-	public List<UserModel> getAllUsers();
 
-	public UserModel getUserById(@Param("id") String id);
+	public List<UserModel> getUser(@Param("userId") String articleId);
 
 	public int delete(String id);
 

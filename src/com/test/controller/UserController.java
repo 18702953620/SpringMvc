@@ -1,5 +1,7 @@
 package com.test.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import com.test.model.BaseModel;
 import com.test.model.UserModel;
 import com.test.utils.DateUtils;
 import com.test.utils.Global;
+import com.test.utils.MD5Util;
 import com.test.utils.TextUtils;
 
 @Controller
@@ -21,31 +24,27 @@ public class UserController extends BaseController {
 	@Autowired
 	UserDao userdao;
 
-	/**
-	 * ·µ»Øjson
-	 * 
-	 * @return
-	 */
 	@ResponseBody
 	@RequestMapping("/addUser")
 	public BaseModel addUser(HttpSession session, UserModel user) {
 		if (user == null) {
-			return makeModel(ERROR_CODE, "ÓÃ»§²»ÄÜÎª¿Õ");
+			return makeModel(ERROR_CODE, "ç”¨æˆ·ä¸èƒ½ä¸ºç©º");
 		} else {
 			if (user.getUsername() == null || user.getPassword() == null) {
-				return makeModel(ERROR_CODE, "ÓÃ»§Ãû»òÕßÃÜÂë²»ÄÜÎª¿Õ");
+				return makeModel(ERROR_CODE, "ç”¨æˆ·åæˆ–è€…å¯†ç ä¸èƒ½ä¸ºç©º");
 			}
 
 			if (userdao.getUserByName(user.getUsername()) == null) {
-				user.setCreateTime(DateUtils.getDate());
+				user.setEditTime(DateUtils.getDate());
+				user.setPassword(MD5Util.encode(user.getPassword()));
 				int code = userdao.add(user);
 				if (code == 0) {
-					return makeModel(code, "Ìí¼ÓÊ§°Ü");
+					return makeModel(code, MSG_ADD_ERROR);
 				} else {
-					return makeModel(code, "Ìí¼Ó³É¹¦");
+					return makeModel(code, MSG_ADD_SUCC);
 				}
 			} else {
-				return makeModel(ERROR_CODE, "ÓÃ»§ÒÑ´æÔÚ");
+				return makeModel(ERROR_CODE, "ç”¨æˆ·åå·²å­˜åœ¨");
 			}
 
 		}
@@ -55,22 +54,25 @@ public class UserController extends BaseController {
 	@RequestMapping("/updateUser")
 	public BaseModel updateUser(HttpSession session, UserModel user) {
 		if (!isLogin(session)) {
-			return makeModel(NO_LOGIN, "ÓÃ»§Î´µÇÂ¼£¬ÇëÏÈµÇÂ¼");
+			return makeModel(NO_LOGIN, MSG_NO_LOGIN);
 		}
 
 		if (user == null) {
-			return makeModel(ERROR_CODE, "ÓÃ»§²»ÄÜÎª¿Õ");
+			return makeModel(ERROR_CODE, "ç”¨æˆ·ä¸èƒ½ä¸ºç©º");
 		} else {
-
-			if (userdao.getUserById(user.getId()) == null) {
-				return makeModel(ERROR_CODE, "ÓÃ»§²»´æÔÚ");
+			List<UserModel> models = userdao.getUser(user.getUserId());
+			if (models == null || models.size() == 0) {
+				return makeModel(ERROR_CODE, "ç”¨æˆ·ä¸å­˜åœ¨");
 			} else {
 				user.setEditTime(DateUtils.getDate());
+				if (TextUtils.isEmpty(user.getPassword())) {
+					user.setPassword(MD5Util.encode(user.getPassword()));
+				}
 				int code = userdao.update(user);
 				if (code == 0) {
-					return makeModel(ERROR_CODE, "¸üĞÂÊ§°Ü");
+					return makeModel(ERROR_CODE, MSG_UPDATE_ERROR);
 				} else {
-					return makeModel(SUCC_CODE, "¸üĞÂ³É¹¦");
+					return makeModel(SUCC_CODE, MSG_UPDATE_SUCC);
 				}
 			}
 
@@ -79,38 +81,33 @@ public class UserController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping("/getUser")
-	public BaseModel getUser(HttpSession session, String id) {
+	public BaseModel getUser(HttpSession session, String userId) {
 		if (!isLogin(session)) {
-			return makeModel(NO_LOGIN, "ÓÃ»§Î´µÇÂ¼£¬ÇëÏÈµÇÂ¼");
+			return makeModel(NO_LOGIN, MSG_NO_LOGIN);
 		}
-
-		if (TextUtils.isEmpty(id)) {
-			return makeModel(SUCC_CODE, SUCC_MSG, userdao.getAllUsers());
-		} else {
-			UserModel model = userdao.getUserById(id);
-			if (model == null) {
-				return makeModel(ERROR_CODE, "ÓÃ»§²»´æÔÚ");
-			}
-			return makeModel(SUCC_CODE, SUCC_MSG, model);
+		List<UserModel> models = userdao.getUser(userId);
+		if (models == null || models.size() == 0) {
+			return makeModel(ERROR_CODE, "ç”¨æˆ·ä¸å­˜åœ¨");
 		}
+		return makeModel(SUCC_CODE, MSG_SUCC, models);
 	}
 
 	@ResponseBody
 	@RequestMapping("/deleteUser")
-	public BaseModel deleteUser(HttpSession session, String id) {
-		
+	public BaseModel deleteUser(HttpSession session, String userId) {
+
 		if (!isLogin(session)) {
-			return makeModel(NO_LOGIN, "ÓÃ»§Î´µÇÂ¼£¬ÇëÏÈµÇÂ¼");
+			return makeModel(NO_LOGIN, MSG_NO_LOGIN);
 		}
-		
-		if (TextUtils.isEmpty(id)) {
-			return makeModel(ERROR_CODE, "ÓÃ»§id²»ÄÜÎª¿Õ");
+
+		if (TextUtils.isEmpty(userId)) {
+			return makeModel(ERROR_CODE, "ç”¨æˆ·id ä¸èƒ½ä¸ºç©º");
 		} else {
-			int code = userdao.delete(id);
+			int code = userdao.delete(userId);
 			if (code == 0) {
-				return makeModel(code, "É¾³ıÊ§°Ü");
+				return makeModel(code, MSG_DELETE_ERROR);
 			} else {
-				return makeModel(code, "É¾³ı³É¹¦");
+				return makeModel(code, MSG_DELETE_SUCC);
 			}
 
 		}
@@ -120,20 +117,19 @@ public class UserController extends BaseController {
 	@RequestMapping("/login")
 	public BaseModel login(HttpSession session, String username, String password) {
 		if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-			return makeModel(ERROR_CODE, "ÓÃ»§Ãû»òÃÜÂë²»ÄÜÎª¿Õ");
+			return makeModel(ERROR_CODE, "ç”¨æˆ·åå’Œå¯†ç ä¸èƒ½ä¸ºç©º");
 		} else {
 
 			UserModel userModel = userdao.getUserByName(username);
 			if (userModel == null) {
-				return makeModel(ERROR_CODE, "ÓÃ»§²»´æÔÚ");
+				return makeModel(ERROR_CODE, "ç”¨æˆ·ä¸å­˜åœ¨");
 			}
-			if (userModel.getPassword().equals(password)) {
+			if (userModel.getPassword().equals(MD5Util.encode(password))) {
 				session.setAttribute(Global.USER_SESSION_KEY, userModel);
 
-				System.out.println("user login=" + session.getAttribute(Global.USER_SESSION_KEY));
-				return makeModel(SUCC_CODE, SUCC_MSG, userModel);
+				return makeModel(SUCC_CODE, MSG_SUCC, userModel);
 			} else {
-				return makeModel(ERROR_CODE, "ÃÜÂë²»ÕıÈ·");
+				return makeModel(ERROR_CODE, "ç”¨æˆ·åæˆ–è€…å¯†ç ä¸æ­£ç¡®");
 			}
 
 		}
@@ -143,10 +139,10 @@ public class UserController extends BaseController {
 	@RequestMapping("/loginout")
 	public BaseModel loginout(HttpSession session) {
 		if (session.getAttribute(Global.USER_SESSION_KEY) == null) {
-			return makeModel(ERROR_CODE, "ÍË³öÊ§°Ü£¬Î´µÇÂ¼");
+			return makeModel(NO_LOGIN, MSG_NO_LOGIN);
 		} else {
 			session.removeAttribute(Global.USER_SESSION_KEY);
-			return makeModel(SUCC_CODE, "ÍË³ö³É¹¦");
+			return makeModel(SUCC_CODE, "é€€å‡ºæˆåŠŸ");
 		}
 	}
 

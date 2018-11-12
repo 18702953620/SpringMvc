@@ -12,8 +12,12 @@
 
 	<!-- scan the package and the sub package -->
 	<context:component-scan base-package="com.test" />
+	<!-- 设置不过滤内容，比如:css,js,img 等资源文件 -->
+	<!-- 资源映射 :会拦截所有请求包括静态资源。需要在springmvc.xml中添加静态资源的映射。 -->
+	<mvc:resources location="/WEB-INF/css/" mapping="/css/**" />
+	<mvc:resources location="/WEB-INF/js/" mapping="/js/**" />
+	<mvc:resources location="/WEB-INF/img/" mapping="/img/**" />
 
-	<!-- don't handle the static resource -->
 	<mvc:default-servlet-handler />
 
 	<!-- if you use annotation you must configure following setting -->
@@ -50,4 +54,5 @@
 		<!-- 后缀 -->
 		<property name="suffix" value=".html" />
 	</bean>
+
 </beans>

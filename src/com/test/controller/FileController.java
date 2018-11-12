@@ -18,7 +18,7 @@ import com.test.model.BaseModel;
 import com.test.utils.TextUtils;
 
 /**
- * ÎÄ¼şÏà¹Ø
+ * ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½
  * 
  * @author ch
  *
@@ -33,7 +33,7 @@ public class FileController extends BaseController {
 	}
 
 	/**
-	 * ÎÄ¼şÉÏ´«
+	 * å•ä¸ªæ–‡ä»¶
 	 * 
 	 * @param file
 	 * @param request
@@ -44,7 +44,7 @@ public class FileController extends BaseController {
 	public BaseModel upload(@RequestParam(value = "file_03", required = false) MultipartFile file,
 			HttpServletRequest request) {
 		if (file == null || file.isEmpty()) {
-			return makeModel(ERROR_CODE, "ÎÄ¼ş²»´æÔÚ");
+			return makeModel(ERROR_CODE, "æ–‡ä»¶ä¸å­˜åœ¨");
 		}
 
 		String fileName = file.getOriginalFilename();
@@ -52,19 +52,18 @@ public class FileController extends BaseController {
 		if (!targetFile.exists()) {
 			targetFile.mkdirs();
 		}
-		// ±£´æ
 		try {
 			file.transferTo(targetFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return makeModel(SUCC_CODE, "ÉÏ´«³É¹¦");
+		return makeModel(SUCC_CODE, "ä¸Šä¼ æˆåŠŸ");
 
 	}
 
 	/**
-	 * ÎÄ¼şÉÏ´«1
+	 * å¤šä¸ªæ–‡ä»¶
 	 * 
 	 * @param request
 	 * @return
@@ -72,21 +71,20 @@ public class FileController extends BaseController {
 	@ResponseBody
 	@RequestMapping("/uploadspring")
 	public BaseModel uploadspring(HttpServletRequest request) {
-		// ½«µ±Ç°ÉÏÏÂÎÄ³õÊ¼»¯¸ø CommonsMutipartResolver (¶à²¿·Ö½âÎöÆ÷)
+		// CommonsMutipartResolver
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
 				request.getSession().getServletContext());
-		// ¼ì²éformÖĞÊÇ·ñÓĞenctype="multipart/form-data"
+		// æ˜¯å¦æœ‰enctype="multipart/form-data"
 		if (multipartResolver.isMultipart(request)) {
-			// ½«request±ä³É¶àrequest
 			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-			// »ñÈ¡multiRequestÖĞËùÓĞµÄÎÄ¼şÃû
+			// éå†
 			Iterator<?> iter = multiRequest.getFileNames();
 
 			while (iter.hasNext()) {
-				// Ò»´Î±éÀúËùÓĞµÄÎÄ¼ş
+				//
 				MultipartFile file = multiRequest.getFile(iter.next().toString());
 				if (file != null) {
-					// ÉÏ´«
+					//
 					File targetFile = new File("D:/ch", TextUtils.getTemFileName(file.getOriginalFilename()));
 					if (!targetFile.exists()) {
 						targetFile.mkdirs();
@@ -99,14 +97,14 @@ public class FileController extends BaseController {
 						e.printStackTrace();
 					}
 
-					return makeModel(SUCC_CODE, "ÉÏ´«³É¹¦");
+					return makeModel(SUCC_CODE, "ä¸Šä¼ æˆåŠŸ");
 				}
 
-				return makeModel(ERROR_CODE, "ÎÄ¼ş²»´æÔÚ");
+				return makeModel(ERROR_CODE, "æ–‡ä»¶ä¸å­˜åœ¨");
 			}
-			return makeModel(ERROR_CODE, "ÎÄ¼ş²»´æÔÚ");
+			return makeModel(ERROR_CODE, "æ–‡ä»¶ä¸å­˜åœ¨");
 		} else {
-			return makeModel(ERROR_CODE, "ÎÄ¼ş²»´æÔÚ");
+			return makeModel(ERROR_CODE, "æ–‡ä»¶ä¸å­˜åœ¨");
 		}
 
 	}
