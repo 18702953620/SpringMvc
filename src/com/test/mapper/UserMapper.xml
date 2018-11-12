@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间应该是对应接口的包名+接口名 -->
+<mapper namespace="com.test.mapper.UserDao">
+	<!--id应该是接口中的方法，结果类型如没有配置别名则应该使用全名称 -->
+	<!--获得所有用户 -->
+
+	<!--获得用户对象通过id -->
+	<select id="getUser" resultType="UserModel">
+		select
+		userId,username,password,phone,email,editTime from user
+		<!--where 元素只会在至少有一个子元素的条件返回 SQL 子句的情况下才去插入“WHERE”子句。而且，若语句的开头为“AND”或“OR”，where 元素也会将它们去除。 -->
+		<where>
+			<if test="userId != null">
+				userId=#{userId}
+			</if>
+		</where>
+
+	</select>
+
+	<!--获得用户对象通过username 和密码 -->
+	<select id="getUserByNameAndPassword" resultType="UserModel">
+		select
+		userId,username,password,phone,email,editTime from user where
+		username=#{username},password=#{password}
+	</select>
+	<!--获得用户对象通过username -->
+	<select id="getUserByName" resultType="UserModel">
+		select
+		userId,username,password,phone,email,editTime from user where
+		username=#{username}
+	</select>
+
+
+	<!-- 增加 -->
+	<insert id="add">
+		insert into
+		user(username,password,phone,email,editTime)
+		values(#{username},#{password},#{phone},#{email},#{editTime})
+	</insert>
+	<!-- 删除 -->
+	<delete id="delete">
+		delete from user where userId=#{userId}
+	</delete>
+	<!-- 更新 -->
+	<update id="update">
+		update user set
+		username=#{username},password=#{password},phone=#{phone},email=#{email},editTime=#{editTime}
+		where
+		userId=#{userId}
+	</update>
+</mapper>

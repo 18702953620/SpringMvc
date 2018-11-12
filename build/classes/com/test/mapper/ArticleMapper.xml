@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间应该是对应接口的包名+接口名 -->
+<mapper namespace="com.test.mapper.ArticleDao">
+	<!--id应该是接口中的方法，结果类型如没有配置别名则应该使用全名称 -->
+	<select id="getArticle" resultType="ArticleModel">
+		select
+		articleId,title,link,readCount,favoriteCount,commitCount,createTime,createUser,`user`.username
+		from article inner join `user` on createUser=`user`.userId
+
+		<!--where 元素只会在至少有一个子元素的条件返回 SQL 子句的情况下才去插入“WHERE”子句。而且，若语句的开头为“AND”或“OR”，where 
+			元素也会将它们去除。 -->
+		<where>
+			<if test="articleId != null">
+				articleId=#{articleId}
+			</if>
+		</where>
+		
+		order by createTime desc 
+	</select>
+
+
+	<!-- 增加 -->
+	<insert id="add">
+		insert into
+		article(title,link,readCount,favoriteCount,commitCount,createTime,createUser)
+		values(#{title},#{link},#{readCount},#{favoriteCount},#{commitCount},#{createTime},#{createUser})
+	</insert>
+	<!-- 删除 -->
+	<delete id="delete">
+		delete from article where articleId=#{articleId}
+	</delete>
+	<!-- 更新 -->
+	<update id="update">
+		update user set
+		title=#{title},link=#{link},readCount=#{readCount},favoriteCount=#{favoriteCount},commitCount=#{commitCount},createTime=#{createTime}
+		where
+		articleId=#{articleId}
+	</update>
+</mapper>
